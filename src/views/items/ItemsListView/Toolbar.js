@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Toolbar = ({ className, ...rest }) => {
+const Toolbar = ({ className, onChangeSearchField, ...rest }) => {
   const classes = useStyles();
 
   return (
@@ -68,6 +68,7 @@ const Toolbar = ({ className, ...rest }) => {
                 }}
                 placeholder="Search items"
                 variant="outlined"
+                onChange={(e) => onChangeSearchField(e)}
               />
             </Box>
           </CardContent>
@@ -78,7 +79,8 @@ const Toolbar = ({ className, ...rest }) => {
 };
 
 Toolbar.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
+  onChangeSearchField: PropTypes.func
 };
 
 export default Toolbar;

@@ -79,7 +79,7 @@ const Results = ({ className, items, ...rest }) => {
     >
       <PerfectScrollbar>
         <Box minWidth={1050}>
-          <Table>
+          <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
                 <TableCell padding="checkbox">

@@ -1,23 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Container,
   makeStyles
 } from '@material-ui/core';
-import axios from 'axios';
 
 import Page from 'src/components/Page';
 import Results from './Results';
 import Toolbar from './Toolbar';
-// import data from './data';
 
-let data = [];
-axios.get('http://127.0.0.1:5000/items/ajax_data/').then((response) => {
-  if (response.data && response.data.data.length > 0) {
-    console.log(response.data.data[0]);
-    data = [...response.data.data];
-  }
-});
+const API_URL = 'http://127.0.0.1:5000/items/ajax_data/';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,10 +20,47 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+// true if search bar is used
+let search = false;
+
 const ItemsListView = () => {
+  /*
+    ItemsListView component
+    Loads all data in the warehouse
+    Allows filtering
+  */
   const classes = useStyles();
-  const [items] = useState(data);
-  console.log(items);
+  const [items, setItems] = useState([]);
+  const [allItems, setAllItems] = useState([]);
+
+  useEffect(() => {
+    if (items === undefined || items.length === 0) {
+      fetch(API_URL)
+        .then((res) => res.json())
+        .then((json) => {
+          setAllItems(json.data);
+          if (search === false) {
+            setItems(json.data);
+          }
+        });
+    }
+  });
+
+  const onChangeSearchField = (e) => {
+    /* Filters */
+    search = true;
+    const { value } = e.target;
+    const valueArr = value.toUpperCase().split(' ');
+
+    const test = allItems.filter((item) => {
+      return (valueArr.every((val) => {
+        return item.barcode.toString()
+          .concat(' ', item.name.toUpperCase())
+          .includes(val);
+      }));
+    });
+    setItems([...test]);
+  };
 
   return (
     <Page
@@ -39,7 +68,7 @@ const ItemsListView = () => {
       title="Items"
     >
       <Container maxWidth={false}>
-        <Toolbar />
+        <Toolbar onChangeSearchField={onChangeSearchField} />
         <Box mt={3}>
           <Results items={items} />
         </Box>
