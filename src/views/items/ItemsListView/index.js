@@ -20,9 +20,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-// true if search bar is used
-let search = false;
-
 const ItemsListView = () => {
   /*
     ItemsListView component
@@ -32,9 +29,12 @@ const ItemsListView = () => {
   const classes = useStyles();
   const [items, setItems] = useState([]);
   const [allItems, setAllItems] = useState([]);
+  // true if search bar is used
+  let search = false;
 
   useEffect(() => {
     if (items === undefined || items.length === 0) {
+      console.log('fetch');
       fetch(API_URL)
         .then((res) => res.json())
         .then((json) => {
@@ -60,6 +60,7 @@ const ItemsListView = () => {
       }));
     });
     setItems([...selectedItems]);
+    search = false;
   };
 
   return (
