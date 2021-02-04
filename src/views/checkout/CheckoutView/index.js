@@ -9,7 +9,7 @@ import Page from 'src/components/Page';
 import Results from './Results';
 import Toolbar from './Toolbar';
 
-const API_URL = 'http://127.0.0.1:5000/items/ajax_data/';
+// const API_URL = 'http://127.0.0.1:5000/items/ajax_data/';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,46 +20,46 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-// true if search bar is used
-let search = false;
-
-const ItemsListView = () => {
+const CheckoutView = () => {
   /*
     ItemsListView component
     Loads all data in the warehouse
     Allows filtering
   */
+  const [basket, setBasket] = useState([]);
   const classes = useStyles();
   const [items, setItems] = useState([]);
   const [allItems, setAllItems] = useState([]);
 
+  const API_URL = 'http://127.0.0.1:5000/items/ajax_data/';
   useEffect(() => {
-    if (items === undefined || items.length === 0) {
-      fetch(API_URL)
-        .then((res) => res.json())
-        .then((json) => {
-          setAllItems(json.data);
-          if (search === false) {
-            setItems(json.data);
-          }
-        });
-    }
-  });
+    console.log('mounted');
+    fetch(API_URL)
+      .then((res) => res.json())
+      .then((json) => {
+        setAllItems(json.data);
+      });
+  }, []);
 
   const onChangeSearchField = (e) => {
     /* Filters */
-    search = true;
+    // search = true;
     const { value } = e.target;
+    console.log(value);
     const valueArr = value.toUpperCase().split(' ');
+    if (value.length === 0) {
+      setBasket([]);
+    }
 
-    const test = allItems.filter((item) => {
+    const selectedItems = allItems.filter((item) => {
       return (valueArr.every((val) => {
         return item.barcode.toString()
           .concat(' ', item.name.toUpperCase())
           .includes(val);
       }));
     });
-    setItems([...test]);
+    setItems([...selectedItems]);
+    setBasket([...selectedItems]);
   };
 
   return (
@@ -68,7 +68,11 @@ const ItemsListView = () => {
       title="Items"
     >
       <Container maxWidth={false}>
-        <Toolbar onChangeSearchField={onChangeSearchField} />
+        <Toolbar
+          onChangeSearchField={onChangeSearchField}
+          basket={basket}
+          items={allItems}
+        />
         <Box mt={3}>
           <Results items={items} />
         </Box>
@@ -77,4 +81,4 @@ const ItemsListView = () => {
   );
 };
 
-export default ItemsListView;
+export default CheckoutView;

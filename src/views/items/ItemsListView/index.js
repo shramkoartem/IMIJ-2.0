@@ -52,14 +52,14 @@ const ItemsListView = () => {
     const { value } = e.target;
     const valueArr = value.toUpperCase().split(' ');
 
-    const test = allItems.filter((item) => {
+    const selectedItems = allItems.filter((item) => {
       return (valueArr.every((val) => {
         return item.barcode.toString()
           .concat(' ', item.name.toUpperCase())
           .includes(val);
       }));
     });
-    setItems([...test]);
+    setItems([...selectedItems]);
   };
 
   return (

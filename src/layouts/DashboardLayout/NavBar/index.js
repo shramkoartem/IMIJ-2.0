@@ -48,6 +48,11 @@ const items = [
     title: 'Items'
   },
   {
+    href: '/app/checkout',
+    icon: ShoppingBagIcon,
+    title: 'Checkout'
+  },
+  {
     href: '/app/products',
     icon: ShoppingBagIcon,
     title: 'Products'

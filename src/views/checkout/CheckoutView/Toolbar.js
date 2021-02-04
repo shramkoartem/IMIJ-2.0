@@ -7,11 +7,9 @@ import {
   Card,
   CardContent,
   TextField,
-  InputAdornment,
-  SvgIcon,
   makeStyles
 } from '@material-ui/core';
-import { Search as SearchIcon } from 'react-feather';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -22,8 +20,9 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1)
   }
 }));
-
-const Toolbar = ({ className, onChangeSearchField, ...rest }) => {
+const Toolbar = ({
+  className, onChangeSearchField, basket, items, ...rest
+}) => {
   const classes = useStyles();
 
   return (
@@ -31,45 +30,30 @@ const Toolbar = ({ className, onChangeSearchField, ...rest }) => {
       className={clsx(classes.root, className)}
       {...rest}
     >
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-      >
-        <Button className={classes.importButton}>
-          Import
-        </Button>
-        <Button className={classes.exportButton}>
-          Export
-        </Button>
-        <Button
-          color="primary"
-          variant="contained"
-        >
-          Add item
-        </Button>
-      </Box>
       <Box mt={3}>
         <Card>
           <CardContent>
             <Box maxWidth={500}>
-              <TextField
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SvgIcon
-                        fontSize="small"
-                        color="action"
-                      >
-                        <SearchIcon />
-                      </SvgIcon>
-                    </InputAdornment>
-                  )
-                }}
-                placeholder="Search items"
-                variant="outlined"
-                onChange={(e) => onChangeSearchField(e)}
+              <Autocomplete
+                id="aurocomplete"
+                freeSolo
+                options={items}
+                getOptionLabel={(item) => item.barcode.toString()
+                  .concat(' ', item.name)}
+                style={{ width: 300 }}
+                renderInput={(params) => <TextField {...params} fullWidth label="Search" variant="outlined" />}
               />
+            </Box>
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+            >
+              <Button
+                color="primary"
+                variant="contained"
+              >
+                Add item
+              </Button>
             </Box>
           </CardContent>
         </Card>
@@ -80,7 +64,9 @@ const Toolbar = ({ className, onChangeSearchField, ...rest }) => {
 
 Toolbar.propTypes = {
   className: PropTypes.string,
-  onChangeSearchField: PropTypes.func
+  onChangeSearchField: PropTypes.func,
+  basket: PropTypes.array,
+  items: PropTypes.array
 };
 
 export default Toolbar;
