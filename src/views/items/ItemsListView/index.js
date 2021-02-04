@@ -34,7 +34,7 @@ const ItemsListView = () => {
 
   useEffect(() => {
     if (items === undefined || items.length === 0) {
-      console.log('fetch');
+      console.log('GET request');
       fetch(API_URL)
         .then((res) => res.json())
         .then((json) => {

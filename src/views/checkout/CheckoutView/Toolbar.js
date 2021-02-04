@@ -24,6 +24,7 @@ const Toolbar = ({
   className, onChangeSearchField, basket, items, ...rest
 }) => {
   const classes = useStyles();
+  let selectedItem = [];
 
   return (
     <div
@@ -35,12 +36,13 @@ const Toolbar = ({
           <CardContent>
             <Box maxWidth={500}>
               <Autocomplete
-                id="aurocomplete"
+                id="autocomplete-field"
                 freeSolo
+                onChange={(event, value) => { selectedItem = value; console.log(selectedItem); }}
                 options={items}
                 getOptionLabel={(item) => item.barcode.toString()
                   .concat(' ', item.name)}
-                style={{ width: 300 }}
+                style={{ width: 500 }}
                 renderInput={(params) => <TextField {...params} fullWidth label="Search" variant="outlined" />}
               />
             </Box>
