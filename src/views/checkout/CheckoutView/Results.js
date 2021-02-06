@@ -7,7 +7,6 @@ import {
   // Avatar,
   Box,
   Card,
-  Checkbox,
   Table,
   TableBody,
   TableCell,
@@ -28,41 +27,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Results = ({ className, items, ...rest }) => {
   const classes = useStyles();
-  const [selectedItemIds, setSelectedItemIds] = useState([]);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
 
-  const handleSelectAll = (event) => {
-    let newSelectedItemIds;
-
-    if (event.target.checked) {
-      newSelectedItemIds = items.map((item) => item.id);
-    } else {
-      newSelectedItemIds = [];
-    }
-
-    setSelectedItemIds(newSelectedItemIds);
-  };
-
-  const handleSelectOne = (event, id) => {
-    const selectedIndex = selectedItemIds.indexOf(id);
-    let newSelectedItemIds = [];
-
-    if (selectedIndex === -1) {
-      newSelectedItemIds = newSelectedItemIds.concat(selectedItemIds, id);
-    } else if (selectedIndex === 0) {
-      newSelectedItemIds = newSelectedItemIds.concat(selectedItemIds.slice(1));
-    } else if (selectedIndex === selectedItemIds.length - 1) {
-      newSelectedItemIds = newSelectedItemIds.concat(selectedItemIds.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelectedItemIds = newSelectedItemIds.concat(
-        selectedItemIds.slice(0, selectedIndex),
-        selectedItemIds.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelectedItemIds(newSelectedItemIds);
-  };
+  console.log(items);
+  console.log('results render');
 
   const handleLimitChange = (event) => {
     setLimit(event.target.value);
@@ -82,25 +51,11 @@ const Results = ({ className, items, ...rest }) => {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    checked={selectedItemIds.length === items.length}
-                    color="primary"
-                    indeterminate={
-                      selectedItemIds.length > 0
-                      && selectedItemIds.length < items.length
-                    }
-                    onChange={handleSelectAll}
-                  />
-                </TableCell>
                 <TableCell>
                   Barcode
                 </TableCell>
                 <TableCell>
                   Name
-                </TableCell>
-                <TableCell>
-                  Cost
                 </TableCell>
                 <TableCell>
                   Price
@@ -111,19 +66,11 @@ const Results = ({ className, items, ...rest }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.slice(page * limit, page * limit + limit).map((item) => (
+              {[...items].slice(page * limit, page * limit + limit).map((item) => (
                 <TableRow
                   hover
                   key={item.id}
-                  selected={selectedItemIds.indexOf(item.id) !== -1}
                 >
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedItemIds.indexOf(item.id) !== -1}
-                      onChange={(event) => handleSelectOne(event, item.id)}
-                      value="true"
-                    />
-                  </TableCell>
                   {/* Barcode */}
                   <TableCell>
                     {item.barcode}
@@ -131,10 +78,6 @@ const Results = ({ className, items, ...rest }) => {
                   {/* Name */}
                   <TableCell>
                     {item.name}
-                  </TableCell>
-                  {/* Cost */}
-                  <TableCell>
-                    {item.cost}
                   </TableCell>
                   {/* Price */}
                   <TableCell>

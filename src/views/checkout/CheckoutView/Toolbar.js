@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 const Toolbar = ({
-  className, onChangeSearchField, basket, items, ...rest
+  className, onClickAddButton, basket, items, ...rest
 }) => {
   const classes = useStyles();
   let selectedItem = [];
@@ -34,28 +34,31 @@ const Toolbar = ({
       <Box mt={3}>
         <Card>
           <CardContent>
-            <Box maxWidth={500}>
+            <Box maxWidth={700} display="flex" flexDirection="row">
               <Autocomplete
                 id="autocomplete-field"
                 freeSolo
-                onChange={(event, value) => { selectedItem = value; console.log(selectedItem); }}
+                onChange={(event, value) => { selectedItem = value; }}
                 options={items}
                 getOptionLabel={(item) => item.barcode.toString()
                   .concat(' ', item.name)}
                 style={{ width: 500 }}
                 renderInput={(params) => <TextField {...params} fullWidth label="Search" variant="outlined" />}
               />
-            </Box>
-            <Box
-              display="flex"
-              justifyContent="flex-end"
-            >
-              <Button
-                color="primary"
-                variant="contained"
+              <Box
+                marginLeft="10px"
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
               >
-                Add item
-              </Button>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={() => onClickAddButton(selectedItem)}
+                >
+                  Add item
+                </Button>
+              </Box>
             </Box>
           </CardContent>
         </Card>
@@ -66,7 +69,7 @@ const Toolbar = ({
 
 Toolbar.propTypes = {
   className: PropTypes.string,
-  onChangeSearchField: PropTypes.func,
+  onClickAddButton: PropTypes.func,
   basket: PropTypes.array,
   items: PropTypes.array
 };

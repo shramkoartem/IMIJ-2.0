@@ -28,7 +28,6 @@ const CheckoutView = () => {
   */
   const [basket, setBasket] = useState([]);
   const classes = useStyles();
-  const [items, setItems] = useState([]);
   const [allItems, setAllItems] = useState([]);
 
   const API_URL = 'http://127.0.0.1:5000/items/ajax_data/';
@@ -41,25 +40,20 @@ const CheckoutView = () => {
       });
   }, []);
 
-  const onChangeSearchField = (e) => {
-    /* Filters */
-    // search = true;
-    const { value } = e.target;
-    console.log(value);
-    const valueArr = value.toUpperCase().split(' ');
-    if (value.length === 0) {
-      setBasket([]);
+  const onClickAddButton = (item) => {
+    /*
+      Adds item to the basket
+      - if item is not in the database, create a new obj for it
+    */
+    const value = item;
+    if (value instanceof String) {
+      console.log('Replace with modular');
+    } else {
+      const newBasket = basket;
+      newBasket.push(item);
+      setBasket([...newBasket]);
+      console.log(basket);
     }
-
-    const selectedItems = allItems.filter((item) => {
-      return (valueArr.every((val) => {
-        return item.barcode.toString()
-          .concat(' ', item.name.toUpperCase())
-          .includes(val);
-      }));
-    });
-    setItems([...selectedItems]);
-    setBasket([...selectedItems]);
   };
 
   return (
@@ -69,12 +63,12 @@ const CheckoutView = () => {
     >
       <Container maxWidth={false}>
         <Toolbar
-          onChangeSearchField={onChangeSearchField}
           basket={basket}
           items={allItems}
+          onClickAddButton={onClickAddButton}
         />
         <Box mt={3}>
-          <Results items={items} />
+          <Results items={basket} />
         </Box>
       </Container>
     </Page>
