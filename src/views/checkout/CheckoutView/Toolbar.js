@@ -21,9 +21,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Toolbar = ({
-  className, onClickAddButton, basket, items, ...rest
-}) => {
+function Toolbar({
+  className, onClickAddButton, handleModalOpen, basket, items, ...rest
+}) {
   const classes = useStyles();
   let selectedItem = [];
 
@@ -66,11 +66,12 @@ const Toolbar = ({
       </Box>
     </div>
   );
-};
+}
 
 Toolbar.propTypes = {
   className: PropTypes.string,
   onClickAddButton: PropTypes.func,
+  handleModalOpen: PropTypes.func,
   basket: PropTypes.array,
   items: PropTypes.array
 };

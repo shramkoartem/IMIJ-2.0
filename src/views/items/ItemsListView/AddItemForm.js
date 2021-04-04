@@ -26,7 +26,12 @@ const useStyles = makeStyles(() => ({
 }));
 
 // Add Item functional component
-function AddItemForm({ className, handleModalClose, ...rest }) {
+const AddItemForm = ({
+  className,
+  handleModalClose,
+  handleModalSubmit,
+  ...rest
+}) => {
   const classes = useStyles();
   const [values, setValues] = useState({
     barcode: '',
@@ -40,7 +45,10 @@ function AddItemForm({ className, handleModalClose, ...rest }) {
       ...values,
       [event.target.name]: event.target.value
     });
-    console.log(values);
+  }
+
+  function isEmpty(object) {
+    return !Object.values(object).every((x) => (x !== null && x !== ''));
   }
 
   return (
@@ -127,6 +135,7 @@ function AddItemForm({ className, handleModalClose, ...rest }) {
                   name="amount"
                   onChange={handleChange}
                   type="number"
+                  required
                   value={values.amount}
                   variant="outlined"
                 />
@@ -140,21 +149,24 @@ function AddItemForm({ className, handleModalClose, ...rest }) {
             p={2}
           >
             <Button
+              disabled={(isEmpty(values))}
               color="primary"
               variant="contained"
+              onClick={() => handleModalSubmit(values)}
             >
-              Save details
+              Submit
             </Button>
           </Box>
         </Card>
       </form>
     </div>
   );
-}
+};
 
 AddItemForm.propTypes = {
   className: PropTypes.string,
-  handleModalClose: PropTypes.func
+  handleModalClose: PropTypes.func,
+  handleModalSubmit: PropTypes.func
 };
 
 export default AddItemForm;
