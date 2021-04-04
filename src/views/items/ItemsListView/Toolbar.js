@@ -23,7 +23,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Toolbar = ({ className, onChangeSearchField, ...rest }) => {
+function Toolbar({
+  className,
+  onChangeSearchField,
+  handleModalOpen, ...rest
+}) {
   const classes = useStyles();
 
   return (
@@ -44,6 +48,7 @@ const Toolbar = ({ className, onChangeSearchField, ...rest }) => {
         <Button
           color="primary"
           variant="contained"
+          onClick={handleModalOpen}
         >
           Add item
         </Button>
@@ -76,11 +81,12 @@ const Toolbar = ({ className, onChangeSearchField, ...rest }) => {
       </Box>
     </div>
   );
-};
+}
 
 Toolbar.propTypes = {
   className: PropTypes.string,
-  onChangeSearchField: PropTypes.func
+  onChangeSearchField: PropTypes.func,
+  handleModalOpen: PropTypes.func
 };
 
 export default Toolbar;

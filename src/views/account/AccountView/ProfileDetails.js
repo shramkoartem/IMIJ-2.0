@@ -37,8 +37,8 @@ const ProfileDetails = ({ className, ...rest }) => {
   const [values, setValues] = useState({
     firstName: 'Katarina',
     lastName: 'Smith',
-    email: 'demo@devias.io',
-    phone: '',
+    price: 0,
+    amount: 0,
     state: 'Alabama',
     country: 'USA'
   });
@@ -106,11 +106,11 @@ const ProfileDetails = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Email Address"
-                name="email"
+                label="Price"
+                name="price"
                 onChange={handleChange}
-                required
-                value={values.email}
+                type="number"
+                value={values.price}
                 variant="outlined"
               />
             </Grid>
@@ -121,11 +121,11 @@ const ProfileDetails = ({ className, ...rest }) => {
             >
               <TextField
                 fullWidth
-                label="Phone Number"
-                name="phone"
+                label="Amount"
+                name="amount"
                 onChange={handleChange}
                 type="number"
-                value={values.phone}
+                value={values.amount}
                 variant="outlined"
               />
             </Grid>

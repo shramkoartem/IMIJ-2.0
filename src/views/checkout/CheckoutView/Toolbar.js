@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(1)
   }
 }));
+
 const Toolbar = ({
   className, onClickAddButton, basket, items, ...rest
 }) => {

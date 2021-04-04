@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Container,
-  makeStyles
+  makeStyles,
+  Modal
 } from '@material-ui/core';
 
 import Page from 'src/components/Page';
 import Results from './Results';
 import Toolbar from './Toolbar';
+import AddItemForm from './AddItemForm';
 
 const API_URL = 'http://127.0.0.1:5000/items/ajax_data/';
 
@@ -29,6 +31,7 @@ const ItemsListView = () => {
   const classes = useStyles();
   const [items, setItems] = useState([]);
   const [allItems, setAllItems] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
   // true if search bar is used
   let search = false;
 
@@ -44,7 +47,7 @@ const ItemsListView = () => {
           }
         });
     }
-  });
+  }, []);
 
   const onChangeSearchField = (e) => {
     /* Filters */
@@ -63,15 +66,34 @@ const ItemsListView = () => {
     search = false;
   };
 
+  function handleModalOpen() {
+    setModalOpen(true);
+  }
+
+  function handleModalClose() {
+    setModalOpen(false);
+  }
+
   return (
     <Page
       className={classes.root}
       title="Items"
     >
       <Container maxWidth={false}>
-        <Toolbar onChangeSearchField={onChangeSearchField} />
+        <Toolbar
+          onChangeSearchField={onChangeSearchField}
+          handleModalOpen={handleModalOpen}
+        />
         <Box mt={3}>
           <Results items={items} />
+          <Modal
+            open={modalOpen}
+            onClose={handleModalClose}
+          >
+            <AddItemForm
+              handleModalClose={handleModalClose}
+            />
+          </Modal>
         </Box>
       </Container>
     </Page>

@@ -26,6 +26,8 @@ const CheckoutView = () => {
     Loads all data in the warehouse
     Allows filtering
   */
+
+  // STATE //
   const [basket, setBasket] = useState([]);
   const classes = useStyles();
   const [allItems, setAllItems] = useState([]);
@@ -46,13 +48,14 @@ const CheckoutView = () => {
       - if item is not in the database, create a new obj for it
     */
     const value = item;
-    if (value instanceof String) {
-      console.log('Replace with modular');
-    } else {
+    console.log(value);
+    if (typeof value === 'object' && value !== null) {
       const newBasket = basket;
       newBasket.push(item);
       setBasket([...newBasket]);
       console.log(basket);
+    } else {
+      console.log('Replace with modular');
     }
   };
 
@@ -62,6 +65,7 @@ const CheckoutView = () => {
       title="Items"
     >
       <Container maxWidth={false}>
+        {/* show pop up conditionally */}
         <Toolbar
           basket={basket}
           items={allItems}
